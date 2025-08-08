@@ -1,13 +1,12 @@
 import requests
 
-
 API_URL="https://opentdb.com/api.php?amount=10&category=18&type=boolean"
 
-request = requests.get(url=API_URL)
-question_data = request.json()["results"]
-
-
-question_data2 = [
+try:
+    request = requests.get(url=API_URL)
+except Exception as e:
+    print(f"Error Occured, probably no internet. If no internet use this static data instead")
+    question_data = [
     {
         "category": "Science: Computers",
         "type": "boolean",
@@ -108,4 +107,6 @@ question_data2 = [
             "True"
         ]
     }
-]
+    ]
+else:
+    question_data = request.json()["results"]
