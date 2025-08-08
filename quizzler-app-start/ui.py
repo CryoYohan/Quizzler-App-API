@@ -1,7 +1,6 @@
-from functools import partial
-from tabnanny import check
 from tkinter import *
 from quiz_brain import QuizBrain
+from time import sleep
 
 class QuizzlerInterface:
     def __init__(self, quiz: QuizBrain):
@@ -32,17 +31,28 @@ class QuizzlerInterface:
 
 
     def get_question(self):
+        self.canvas.config(bg="WHITE")
         try:
             q_text = self.quiz.next_question()
             self.canvas.itemconfig(self.question_text, text=q_text)
         except Exception as e:
             print(f"Error: {e}")
 
+
     def check_answer(self, ans: str):
         print(ans)
-        self.quiz.check_answer(ans)
+        self.get_feedback(self.quiz.check_answer(ans))
         self.score_label.config(text=f"Score: {self.quiz.score}")
-        self.get_question()
+
+    def get_feedback(self, is_right):
+        if is_right:
+            self.canvas.config(bg="GREEN")
+        else:
+            self.canvas.config(bg="RED")
+
+        self.window.after(1000, self.get_question)
+
+
 
 
 
