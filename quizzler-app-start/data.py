@@ -1,4 +1,13 @@
-question_data = [
+import requests
+
+
+API_URL="https://opentdb.com/api.php?amount=10&category=18&type=boolean"
+
+request = requests.get(url=API_URL)
+question_data = request.json()["results"]
+
+
+question_data2 = [
     {
         "category": "Science: Computers",
         "type": "boolean",
