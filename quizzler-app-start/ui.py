@@ -1,3 +1,4 @@
+from gc import disable
 from tkinter import *
 from quiz_brain import QuizBrain
 from time import sleep
@@ -31,16 +32,20 @@ class QuizzlerInterface:
 
 
     def get_question(self):
-        self.canvas.config(bg="WHITE")
-        try:
-            q_text = self.quiz.next_question()
-            self.canvas.itemconfig(self.question_text, text=q_text)
-        except Exception as e:
-            print(f"Error: {e}")
+        if self.quiz.still_has_questions():
+            self.canvas.config(bg="WHITE")
+            try:
+                q_text = self.quiz.next_question()
+                self.canvas.itemconfig(self.question_text, text=q_text)
+            except Exception as e:
+                print(f"Error: {e}")
+        else:
+            self.canvas.itemconfig(self.question_text,text="You've reached the end of the quiz!")
+            self.true_button.config(state="disabled")
+            self.false_button.config(state="disabled")
 
 
     def check_answer(self, ans: str):
-        print(ans)
         self.get_feedback(self.quiz.check_answer(ans))
         self.score_label.config(text=f"Score: {self.quiz.score}")
 
